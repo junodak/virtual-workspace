@@ -16,10 +16,50 @@
 Frontend             AI Agent
 ```
 
+- **App Independence** - Each app is fully independent (API-only communication)
 - **Single Source of Truth** - Business logic in Service layer only
 - **Feature Parity** - What works in frontend also works in chat
 - **JWT Auth** - Same authentication for frontend and AI agent
 - **No separate MCP server** - Tool definitions = API specs
+
+---
+
+## Architecture Layers
+
+```
+┌─────────────────────────────────────────────────┐
+│              Presentation Layer                 │
+│         (web, chat widget, mobile)              │
+└─────────────────────┬───────────────────────────┘
+                      │
+┌─────────────────────▼───────────────────────────┐
+│                 API Layer                       │
+│           (REST endpoints, JWT)                 │
+└─────────────────────┬───────────────────────────┘
+                      │
+┌─────────────────────▼───────────────────────────┐
+│               Service Layer                     │
+│   (Business Logic - Single Source of Truth)    │
+└─────────────────────┬───────────────────────────┘
+                      │
+┌─────────────────────▼───────────────────────────┐
+│                 Data Layer                      │
+│         (Repository, ORM, Storage)              │
+└─────────────────────┬───────────────────────────┘
+                      │
+┌─────────────────────▼───────────────────────────┐
+│            Infrastructure Layer                 │
+│       (PostgreSQL, Redis, MinIO)                │
+└─────────────────────────────────────────────────┘
+```
+
+| Layer | Responsibility |
+|-------|----------------|
+| Presentation | UI rendering, user interaction |
+| API | Request handling, validation, auth |
+| Service | Business logic, orchestration |
+| Data | Data access, caching, file storage |
+| Infrastructure | Databases, object storage, cache |
 
 ---
 
@@ -45,6 +85,37 @@ DELETE /api/{app}/:id       # remove
 ```
 
 Tool definitions are auto-generated from API specs.
+
+---
+
+## Chat App
+
+Chat operates in **two modes**:
+
+1. **Sidebar/Widget Mode** - Accessible from any app (right sidebar or floating button)
+   - Use AI while working in doc, sheet, slide, etc.
+   - Context-aware assistance within current app
+
+2. **Standalone Mode** - Independent full app
+   - Command-only usage without viewing other apps
+   - Direct conversation interface
+
+### Cross-App Control via Chat
+
+```
+User (Presentation) → Chat → AI App (Service Layer)
+                                    ↓
+                              API calls to other apps
+                                    ↓
+                        file / doc / sheet / slide / ...
+```
+
+User can control all apps through chat without directly opening them.
+
+### Mobile Strategy
+
+1. **Phase 1**: Chat mobile app (command-based control)
+2. **Phase 2**: Expand to other apps as needed
 
 ---
 
