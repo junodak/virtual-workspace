@@ -53,19 +53,20 @@ Frontend             AI Agent
 └─────────────────────────────────────────────────┘
 ```
 
-| Layer | Responsibility |
-|-------|----------------|
-| Presentation | UI rendering, user interaction |
-| API | Request handling, validation, auth |
-| Service | Business logic, orchestration |
-| Data | Data access, caching, file storage |
-| Infrastructure | Databases, object storage, cache |
+| Layer          | Responsibility                     |
+| -------------- | ---------------------------------- |
+| Presentation   | UI rendering, user interaction     |
+| API            | Request handling, validation, auth |
+| Service        | Business logic, orchestration      |
+| Data           | Data access, caching, file storage |
+| Infrastructure | Databases, object storage, cache   |
 
 ---
 
 ## API Design
 
 ### Endpoint Pattern
+
 ```
 POST   /api/{app}           # create
 GET    /api/{app}           # findAll
@@ -75,6 +76,7 @@ DELETE /api/{app}/:id       # remove
 ```
 
 ### Tool Definition Pattern
+
 ```json
 {
   "name": "{app}.{action}",
@@ -143,6 +145,7 @@ User screen: Q3_draft.docx opens
 **Providers:** OpenAI, Anthropic, Google, xAI, Custom HTTP
 
 **Model Selection Priority:**
+
 1. Request explicit
 2. Chat room setting
 3. User preference

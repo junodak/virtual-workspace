@@ -53,19 +53,20 @@ Frontend             AI Agent
 └─────────────────────────────────────────────────┘
 ```
 
-| 레이어 | 책임 |
-|-------|------|
-| Presentation | UI 렌더링, 사용자 상호작용 |
-| API | 요청 처리, 유효성 검사, 인증 |
-| Service | 비즈니스 로직, 오케스트레이션 |
-| Data | 데이터 접근, 캐싱, 파일 저장 |
-| Infrastructure | DB, 오브젝트 스토리지, 캐시 |
+| 레이어         | 책임                          |
+| -------------- | ----------------------------- |
+| Presentation   | UI 렌더링, 사용자 상호작용    |
+| API            | 요청 처리, 유효성 검사, 인증  |
+| Service        | 비즈니스 로직, 오케스트레이션 |
+| Data           | 데이터 접근, 캐싱, 파일 저장  |
+| Infrastructure | DB, 오브젝트 스토리지, 캐시   |
 
 ---
 
 ## API 설계
 
 ### 엔드포인트 패턴
+
 ```
 POST   /api/{app}           # create
 GET    /api/{app}           # findAll
@@ -75,6 +76,7 @@ DELETE /api/{app}/:id       # remove
 ```
 
 ### Tool 정의 패턴
+
 ```json
 {
   "name": "{app}.{action}",
@@ -143,6 +145,7 @@ Tool Call → HTTP (동일 JWT)
 **Providers:** OpenAI, Anthropic, Google, xAI, Custom HTTP
 
 **모델 선택 우선순위:**
+
 1. 요청에서 명시
 2. 채팅방 설정
 3. 유저 선호

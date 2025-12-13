@@ -8,18 +8,18 @@ A virtual workspace on the internet. Users can interact with apps directly via U
 
 ## Apps
 
-| App | Description |
-|-----|-------------|
-| `file` | Filesystem management |
-| `doc` | Document editor |
-| `slide` | Presentation |
-| `sheet` | Spreadsheet |
-| `gallery` | Image/Video viewer |
-| `browser` | Web browsing, search |
-| `mail` | Email |
-| `db` | Database viewer |
-| `chat` | Chat UI + AI agent |
-| `ai` | LLM routing |
+| App       | Description           |
+| --------- | --------------------- |
+| `file`    | Filesystem management |
+| `doc`     | Document editor       |
+| `slide`   | Presentation          |
+| `sheet`   | Spreadsheet           |
+| `gallery` | Image/Video viewer    |
+| `browser` | Web browsing, search  |
+| `mail`    | Email                 |
+| `db`      | Database viewer       |
+| `chat`    | Chat UI + AI agent    |
+| `ai`      | LLM routing           |
 
 ## Quick Start
 

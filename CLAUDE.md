@@ -47,15 +47,15 @@ docker compose logs -f <service>  # View logs
 
 ## Ports
 
-| Service | Port |
-|---------|------|
-| web | 3000 |
+| Service   | Port      |
+| --------- | --------- |
+| web       | 3000      |
 | file~chat | 3001~3009 |
-| ai | 8000 |
-| nginx | 80 |
-| postgres | 5432 |
-| redis | 6379 |
-| minio | 9000 |
+| ai        | 8000      |
+| nginx     | 80        |
+| postgres  | 5432      |
+| redis     | 6379      |
+| minio     | 9000      |
 
 ## Documentation
 
