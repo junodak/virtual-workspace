@@ -1,0 +1,176 @@
+networks:
+  frontend:
+  backend:
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+
+services:
+  # ===================
+  # Infrastructure
+  # ===================
+  postgres:
+    image: postgres:16-alpine
+    env_file: .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    networks:
+      - backend
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio
+    env_file: .env
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - backend
+    restart: unless-stopped
+
+  # ===================
+  # Platform Apps
+  # ===================
+  file:
+    image: junhokim123/file:latest
+    env_file: .env
+    depends_on:
+      - postgres
+      - redis
+      - minio
+    networks:
+      - backend
+    restart: unless-stopped
+
+  chat:
+    image: junhokim123/chat:latest
+    env_file: .env
+    depends_on:
+      - postgres
+      - redis
+      - ai
+    networks:
+      - backend
+    restart: unless-stopped
+
+  # ===================
+  # File-based Apps
+  # ===================
+  doc:
+    image: junhokim123/doc:latest
+    env_file: .env
+    depends_on:
+      - postgres
+      - file
+    networks:
+      - backend
+    restart: unless-stopped
+
+  slide:
+    image: junhokim123/slide:latest
+    env_file: .env
+    depends_on:
+      - postgres
+      - file
+    networks:
+      - backend
+    restart: unless-stopped
+
+  sheet:
+    image: junhokim123/sheet:latest
+    env_file: .env
+    depends_on:
+      - postgres
+      - file
+    networks:
+      - backend
+    restart: unless-stopped
+
+  gallery:
+    image: junhokim123/gallery:latest
+    env_file: .env
+    depends_on:
+      - postgres
+      - file
+      - minio
+    networks:
+      - backend
+    restart: unless-stopped
+
+  # ===================
+  # Service Apps
+  # ===================
+  browser:
+    image: junhokim123/browser:latest
+    env_file: .env
+    depends_on:
+      - postgres
+    networks:
+      - backend
+    restart: unless-stopped
+
+  mail:
+    image: junhokim123/mail:latest
+    env_file: .env
+    depends_on:
+      - postgres
+    networks:
+      - backend
+    restart: unless-stopped
+
+  db:
+    image: junhokim123/db:latest
+    env_file: .env
+    depends_on:
+      - postgres
+    networks:
+      - backend
+    restart: unless-stopped
+
+  # ===================
+  # AI Service
+  # ===================
+  ai:
+    image: junhokim123/ai:latest
+    env_file: .env
+    networks:
+      - backend
+    restart: unless-stopped
+
+  # ===================
+  # Frontend & Reverse Proxy
+  # ===================
+  web:
+    image: junhokim123/web:latest
+    env_file: .env
+    networks:
+      - frontend
+      - backend
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - web
+      - file
+      - doc
+      - chat
+      - ai
+    restart: unless-stopped
