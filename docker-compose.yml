@@ -117,18 +117,18 @@ services:
   #   networks:
   #     - backend
 
-  # web:
-  #   build: ./apps/web
-  #   env_file: .env
-  #   volumes:
-  #     - ./apps/web/src:/app/src:ro
-  #     - ./apps/web/public:/app/public:ro
-  #   command: npm run dev
-  #   ports:
-  #     - "3000:3000"
-  #   networks:
-  #     - frontend
-  #     - backend
+  web:
+    build: ./apps/web
+    env_file: .env
+    volumes:
+      - ./apps/web/src:/app/src:ro
+      - ./apps/web/public:/app/public:ro
+    command: npm run dev
+    ports:
+      - '3000:3000'
+    networks:
+      - frontend
+      - backend
 
   # --- v0.3: db ---
   # db:
