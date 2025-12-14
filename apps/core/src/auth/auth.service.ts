@@ -55,6 +55,35 @@ export class AuthService {
     return this.userRepository.findOne({ where: { id: userId } });
   }
 
+  async googleLogin(googleUser: { googleId: string; email: string; name?: string }) {
+    let user = await this.userRepository.findOne({
+      where: { googleId: googleUser.googleId },
+    });
+
+    if (!user) {
+      // Check if email already exists
+      const existingUser = await this.userRepository.findOne({
+        where: { email: googleUser.email },
+      });
+
+      if (existingUser) {
+        // Link Google account to existing user
+        existingUser.googleId = googleUser.googleId;
+        user = await this.userRepository.save(existingUser);
+      } else {
+        // Create new user
+        user = this.userRepository.create({
+          email: googleUser.email,
+          googleId: googleUser.googleId,
+          name: googleUser.name,
+        });
+        await this.userRepository.save(user);
+      }
+    }
+
+    return this.generateToken(user);
+  }
+
   private generateToken(user: User) {
     const payload = { sub: user.id, email: user.email };
 
