@@ -37,6 +37,15 @@ export interface User {
   id: string;
   email: string;
   name?: string;
+  createdAt?: string;
+}
+
+export interface AppInfo {
+  id: string;
+  name: string;
+  icon: string;
+  path: string;
+  description: string;
 }
 
 export const api = {
@@ -54,6 +63,29 @@ export const api = {
 
   getMe: (token: string) =>
     request<User>('/api/core/auth/me', {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+
+  getProfile: (token: string) =>
+    request<User>('/api/core/user/profile', {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+
+  updateProfile: (token: string, data: { name?: string; password?: string }) =>
+    request<User>('/api/core/user/profile', {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(data),
+    }),
+
+  deleteAccount: (token: string) =>
+    request<{ message: string }>('/api/core/user/account', {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+
+  getApps: (token: string) =>
+    request<AppInfo[]>('/api/core/apps', {
       headers: { Authorization: `Bearer ${token}` },
     }),
 };
