@@ -53,6 +53,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
   }, [token]);
 
   useEffect(() => {
+    if (!showAccountMenu) return;
     function handleClickOutside(event: MouseEvent) {
       if (accountMenuRef.current && !accountMenuRef.current.contains(event.target as Node)) {
         setShowAccountMenu(false);
@@ -60,7 +61,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [showAccountMenu]);
 
   if (!token) return null;
 

@@ -84,6 +84,7 @@ export function ChatPanel({ isOpen, width, sidebarWidth, onWidthChange, onClose 
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
+        {/* TODO: Implement send message functionality */}
         <button type="button" disabled={!message.trim()}>
           <svg
             width="20"

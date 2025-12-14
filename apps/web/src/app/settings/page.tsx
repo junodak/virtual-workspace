@@ -8,7 +8,7 @@ import { api } from '@/lib/api';
 
 export default function SettingsPage() {
   const router = useRouter();
-  const { user, token, isLoading: authLoading } = useAuth();
+  const { user, token, isLoading: authLoading, refreshUser } = useAuth();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -23,7 +23,7 @@ export default function SettingsPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/login');
+      router.push('/');
     }
   }, [authLoading, user, router]);
 
@@ -55,6 +55,7 @@ export default function SettingsPage() {
     } else {
       setMessage('Profile updated');
       setPassword('');
+      await refreshUser();
     }
     setIsLoading(false);
   };

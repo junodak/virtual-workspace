@@ -14,6 +14,7 @@ interface AuthContextValue extends AuthState {
   register: (email: string, password: string, name?: string) => Promise<string | null>;
   logout: () => void;
   setToken: (token: string) => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -86,8 +87,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [state.token, fetchUser],
   );
 
+  const refreshUser = useCallback(async () => {
+    if (state.token) {
+      await fetchUser(state.token);
+    }
+  }, [state.token, fetchUser]);
+
   return (
-    <AuthContext.Provider value={{ ...state, login, register, logout, setToken }}>
+    <AuthContext.Provider value={{ ...state, login, register, logout, setToken, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
