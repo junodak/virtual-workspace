@@ -8,14 +8,16 @@ import { ChatPanel, ChatButton } from './ChatPanel';
 const SIDEBAR_OPEN = 240;
 const SIDEBAR_COLLAPSED = 56;
 
-function usePersistedState<T>(key: string, defaultValue: T): [T, (value: T) => void] {
+function usePersistedState<T>(key: string, defaultValue: T): [T, (value: T) => void, boolean] {
   const [state, setState] = useState<T>(defaultValue);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem(key);
     if (stored !== null) {
       setState(JSON.parse(stored));
     }
+    setIsHydrated(true);
   }, [key]);
 
   const setPersistedState = (value: T) => {
@@ -23,16 +25,18 @@ function usePersistedState<T>(key: string, defaultValue: T): [T, (value: T) => v
     localStorage.setItem(key, JSON.stringify(value));
   };
 
-  return [state, setPersistedState];
+  return [state, setPersistedState, isHydrated];
 }
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [chatOpen, setChatOpen] = usePersistedState('chat-open', false);
-  const [chatWidth, setChatWidth] = usePersistedState('chat-width', 380);
+  const [chatOpen, setChatOpen, chatHydrated] = usePersistedState('chat-open', false);
+  const [chatWidth, setChatWidth, widthHydrated] = usePersistedState('chat-width', 380);
 
-  if (isLoading) {
+  const isHydrated = chatHydrated && widthHydrated;
+
+  if (isLoading || !isHydrated) {
     return <div className="app-loading">Loading...</div>;
   }
 
