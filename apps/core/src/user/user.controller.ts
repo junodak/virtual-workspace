@@ -10,17 +10,17 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get('profile')
-  async getProfile(@Request() req: { user: { userId: string } }): Promise<UserProfileDto> {
-    const user = await this.userService.findById(req.user.userId);
+  async getProfile(@Request() req: { user: { id: string } }): Promise<UserProfileDto> {
+    const user = await this.userService.findById(req.user.id);
     return UserProfileDto.from(user);
   }
 
   @Patch('profile')
   async updateProfile(
-    @Request() req: { user: { userId: string } },
+    @Request() req: { user: { id: string } },
     @Body() dto: UpdateProfileDto,
   ): Promise<UserProfileDto> {
-    const user = await this.userService.updateProfile(req.user.userId, dto);
+    const user = await this.userService.updateProfile(req.user.id, dto);
     return UserProfileDto.from(user);
   }
 }
