@@ -61,7 +61,21 @@ services:
   # Apps (uncomment as needed)
   # ===================
 
-  # --- v0.1: file, doc, chat, ai, web ---
+  # --- v0.1: core, file, doc, chat, ai, web ---
+  core:
+    build: ./apps/core
+    env_file: .env
+    volumes:
+      - ./apps/core/src:/app/src:ro
+    command: npm run start:dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '3001:3001'
+    networks:
+      - backend
+
   # file:
   #   build: ./apps/file
   #   env_file: .env
