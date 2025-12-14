@@ -66,22 +66,11 @@ export const api = {
       headers: { Authorization: `Bearer ${token}` },
     }),
 
-  getProfile: (token: string) =>
-    request<User>('/api/core/user/profile', {
-      headers: { Authorization: `Bearer ${token}` },
-    }),
-
   updateProfile: (token: string, data: { name?: string; password?: string }) =>
     request<User>('/api/core/user/profile', {
       method: 'PATCH',
       headers: { Authorization: `Bearer ${token}` },
       body: JSON.stringify(data),
-    }),
-
-  deleteAccount: (token: string) =>
-    request<{ message: string }>('/api/core/user/account', {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` },
     }),
 
   getApps: (token: string) =>

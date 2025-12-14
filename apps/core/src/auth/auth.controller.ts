@@ -4,10 +4,15 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 import { GoogleAuthGuard } from './google-auth.guard';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { UserService } from '../user/user.service';
+import { UserProfileDto } from '../user/dto/user-profile.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+  ) {}
 
   @Post('register')
   register(@Body() dto: RegisterDto) {
@@ -21,8 +26,9 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  getMe(@Request() req: { user: { id: string; email: string } }) {
-    return req.user;
+  async getMe(@Request() req: { user: { userId: string } }): Promise<UserProfileDto> {
+    const user = await this.userService.findById(req.user.userId);
+    return UserProfileDto.from(user);
   }
 
   @Get('google')

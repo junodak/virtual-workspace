@@ -1,15 +1,8 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AppInfoDto } from './dto/app-info.dto';
 
-export interface AppInfo {
-  id: string;
-  name: string;
-  icon: string;
-  path: string;
-  description: string;
-}
-
-const AVAILABLE_APPS: AppInfo[] = [
+const AVAILABLE_APPS: AppInfoDto[] = [
   { id: 'file', name: 'Files', icon: 'folder', path: '/app/file', description: 'File manager' },
   {
     id: 'doc',
@@ -61,7 +54,7 @@ const AVAILABLE_APPS: AppInfo[] = [
 export class AppsController {
   @Get()
   @UseGuards(JwtAuthGuard)
-  getApps(): AppInfo[] {
+  getApps(): AppInfoDto[] {
     return AVAILABLE_APPS;
   }
 }

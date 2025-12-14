@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { GoogleStrategy } from './google.strategy';
 import { User } from '../user/user.entity';
+import { UserModule } from '../user/user.module';
 
 const googleOAuthProviders =
   process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET ? [GoogleStrategy] : [];
@@ -26,6 +27,7 @@ const googleOAuthProviders =
       }),
     }),
     TypeOrmModule.forFeature([User]),
+    UserModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, ...googleOAuthProviders],
