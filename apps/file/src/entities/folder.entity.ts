@@ -9,7 +9,7 @@ import {
   JoinColumn,
   Index,
 } from 'typeorm';
-import { File } from './file.entity';
+import type { File } from './file.entity';
 
 @Entity('folders')
 export class Folder {
@@ -29,7 +29,7 @@ export class Folder {
   @OneToMany(() => Folder, (folder) => folder.parent)
   children: Folder[];
 
-  @OneToMany(() => File, (file) => file.folder)
+  @OneToMany('File', 'folder')
   files: File[];
 
   @Index('idx_folders_owner_id')
