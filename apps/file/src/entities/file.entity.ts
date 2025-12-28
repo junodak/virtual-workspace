@@ -27,6 +27,7 @@ export class File {
   @Column()
   objectKey: string; // MinIO object key
 
+  @Index('idx_files_folder_id')
   @Column({ nullable: true })
   folderId: string;
 
