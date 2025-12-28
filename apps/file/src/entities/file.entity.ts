@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  Index,
 } from 'typeorm';
 import { Folder } from './folder.entity';
 
@@ -33,6 +34,7 @@ export class File {
   @JoinColumn({ name: 'folderId' })
   folder: Folder;
 
+  @Index()
   @Column()
   ownerId: string; // User UUID from core service
 
