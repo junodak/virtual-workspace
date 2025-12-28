@@ -76,20 +76,19 @@ services:
     networks:
       - backend
 
-  # file:
-  #   build: ./apps/file
-  #   env_file: .env
-  #   volumes:
-  #     - ./apps/file/src:/app/src:ro
-  #   command: npm run dev
-  #   depends_on:
-  #     - postgres
-  #     - redis
-  #     - minio
-  #   ports:
-  #     - "3001:3000"
-  #   networks:
-  #     - backend
+  file:
+    build: ./apps/file
+    env_file: .env
+    volumes:
+      - ./apps/file/src:/app/src:ro
+    command: npm run start:dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '3002:3002'
+    networks:
+      - backend
 
   # doc:
   #   build: ./apps/doc
