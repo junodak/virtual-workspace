@@ -34,7 +34,7 @@ export class File {
   @JoinColumn({ name: 'folderId' })
   folder: Folder;
 
-  @Index()
+  @Index('idx_files_owner_id')
   @Column()
   ownerId: string; // User UUID from core service
 

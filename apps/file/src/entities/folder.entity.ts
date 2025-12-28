@@ -32,11 +32,11 @@ export class Folder {
   @OneToMany(() => File, (file) => file.folder)
   files: File[];
 
-  @Index()
+  @Index('idx_folders_owner_id')
   @Column()
   ownerId: string; // User UUID from core service
 
-  @Index()
+  @Index('idx_folders_path')
   @Column({ nullable: true })
   path: string; // Full path for search (e.g., /documents/work)
 
