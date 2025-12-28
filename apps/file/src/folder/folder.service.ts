@@ -57,10 +57,24 @@ export class FolderService {
   async update(id: string, updateFolderDto: UpdateFolderDto, ownerId: string): Promise<Folder> {
     const folder = await this.findOne(id, ownerId);
 
-    if (updateFolderDto.name) {
+    if (updateFolderDto.name && updateFolderDto.name !== folder.name) {
+      const oldPath = folder.path;
       const parentPath = folder.path.substring(0, folder.path.lastIndexOf('/'));
-      folder.path = `${parentPath}/${updateFolderDto.name}`;
+      const newPath = `${parentPath}/${updateFolderDto.name}`;
+
+      folder.path = newPath;
       folder.name = updateFolderDto.name;
+
+      // Update all child folders' paths
+      await this.folderRepository
+        .createQueryBuilder()
+        .update(Folder)
+        .set({ path: () => `REPLACE(path, '${oldPath}/', '${newPath}/')` })
+        .where('ownerId = :ownerId AND path LIKE :pathPattern', {
+          ownerId,
+          pathPattern: `${oldPath}/%`,
+        })
+        .execute();
     }
 
     return this.folderRepository.save(folder);

@@ -7,6 +7,7 @@ import { Folder } from './entities/folder.entity';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { FolderModule } from './folder/folder.module';
 import { FileModule } from './file/file.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { FileModule } from './file/file.module';
         synchronize: configService.get('NODE_ENV') !== 'production',
       }),
     }),
+    AuthModule,
     FolderModule,
     FileModule,
   ],

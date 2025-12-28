@@ -19,6 +19,7 @@ export class Folder {
   @Column()
   name: string;
 
+  @Index('idx_folders_parent_id')
   @Column({ nullable: true })
   parentId: string;
 
