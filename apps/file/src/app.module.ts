@@ -5,6 +5,8 @@ import { AppController } from './app.controller';
 import { File } from './entities/file.entity';
 import { Folder } from './entities/folder.entity';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { FolderModule } from './folder/folder.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
         synchronize: configService.get('NODE_ENV') !== 'production',
       }),
     }),
+    FolderModule,
+    FileModule,
   ],
   controllers: [AppController],
 })
