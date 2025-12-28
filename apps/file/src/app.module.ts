@@ -2,7 +2,6 @@ import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { File } from './entities/file.entity';
 import { Folder } from './entities/folder.entity';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
@@ -28,7 +27,6 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
