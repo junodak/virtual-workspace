@@ -65,16 +65,20 @@ export class FolderService {
       folder.path = newPath;
       folder.name = updateFolderDto.name;
 
-      // Update all child folders' paths
-      await this.folderRepository
-        .createQueryBuilder()
-        .update(Folder)
-        .set({ path: () => `REPLACE(path, '${oldPath}/', '${newPath}/')` })
-        .where('ownerId = :ownerId AND path LIKE :pathPattern', {
-          ownerId,
-          pathPattern: `${oldPath}/%`,
-        })
-        .execute();
+      // Update all child folders' paths (safe from SQL injection)
+      const childFolders = await this.folderRepository.find({
+        where: { ownerId },
+      });
+
+      const foldersToUpdate = childFolders.filter((f) => f.path.startsWith(`${oldPath}/`));
+
+      for (const childFolder of foldersToUpdate) {
+        childFolder.path = childFolder.path.replace(`${oldPath}/`, `${newPath}/`);
+      }
+
+      if (foldersToUpdate.length > 0) {
+        await this.folderRepository.save(foldersToUpdate);
+      }
     }
 
     return this.folderRepository.save(folder);
